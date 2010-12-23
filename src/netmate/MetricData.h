@@ -6,7 +6,7 @@
     This version has been modified to provide additional output and 
     compatibility. For more information, please visit
 
-    http://web.cs.dal.ca/darndt
+    http://web.cs.dal.ca/~darndt
 
     Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
                         Berlin, Germany

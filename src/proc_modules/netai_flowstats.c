@@ -6,7 +6,7 @@ Modifications Copyright Daniel Arndt, 2010
 This version has been modified to provide additional output and 
 compatibility. For more information, please visit
 
-http://web.cs.dal.ca/darndt/projects/netmate-bundle
+http://web.cs.dal.ca/~darndt/
 
 Copyright 2005-2006 Swinburne University of Technology 
 
