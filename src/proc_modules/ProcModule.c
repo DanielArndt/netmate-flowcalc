@@ -1,29 +1,36 @@
 
 /*! \file ProcModule.c
 
-    Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
-                        Berlin, Germany
+Modifications Copyright Daniel Arndt, 2010
 
-    This file is part of Network Measurement and Accounting System (NETMATE).
+This version has been modified to provide additional output and 
+compatibility. For more information, please visit
 
-    NETMATE is free software; you can redistribute it and/or modify 
-    it under the terms of the GNU General Public License as published by 
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
+http://web.cs.dal.ca/darndt/projects/netmate-bundle
 
-    NETMATE is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
+Berlin, Germany
 
-    You should have received a copy of the GNU General Public License
-    along with this software; if not, write to the Free Software 
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+This file is part of Network Measurement and Accounting System (NETMATE).
 
-    Description:
-    implementation of helper functions for Packet Processing Modules
+NETMATE is free software; you can redistribute it and/or modify 
+it under the terms of the GNU General Public License as published by 
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
 
-    $Id: ProcModule.c 748 2009-09-10 02:54:03Z szander $
+NETMATE is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this software; if not, write to the Free Software 
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+Description:
+implementation of helper functions for Packet Processing Modules
+
+$Id: ProcModule.c 748 2009-09-10 02:54:03Z szander $
 
 */
 
@@ -97,18 +104,18 @@ inline void ADD_INT16(short val)
     _pos += sizeof(val);
 }
 
-inline void ADD_INT32(int val)
+inline void ADD_INT32(int32_t val)
 {
-    ALIGN(_pos, int);
-    *((int*)(_dest+_pos))= val;
+    ALIGN(_pos, int32_t);
+    *((int32_t*)(_dest+_pos))= val;
     _pos += sizeof(val);
 }
 
-inline void ADD_INT64(long long val)
+inline void ADD_INT64(int64_t val)
 {
-    ALIGN( _pos, long ); 
+    ALIGN( _pos, int64_t );
     /* even 64bit values only aligned to 32 bit! */
-    *((long long*)(_dest+_pos))= val; 
+    *((int64_t*)(_dest+_pos))= val; 
     _pos += sizeof(val); 
 }
 
@@ -126,18 +133,18 @@ inline void ADD_UINT16(unsigned short val)
     _pos += sizeof(val);
 }
 
-inline void ADD_UINT32(unsigned int val)
+inline void ADD_UINT32(uint32_t val)
 {
-    ALIGN(_pos, unsigned int);
-    *((unsigned int*)(_dest+_pos)) = val;
+    ALIGN(_pos, uint32_t);
+    *((uint32_t*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_UINT64(unsigned long long val)
+inline void ADD_UINT64(uint64_t val)
 {
-    ALIGN( _pos, unsigned long ); 
+    ALIGN( _pos, uint64_t ); 
     /* even 64bit values only aligned to 32 bit! */
-    *((unsigned long long*)(_dest+_pos)) = val; 
+    *((uint64_t*)(_dest+_pos)) = val; 
     _pos += sizeof(val); 
 }
 

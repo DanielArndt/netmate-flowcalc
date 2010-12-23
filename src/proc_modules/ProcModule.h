@@ -1,6 +1,13 @@
 
 /*! \file  proc_modules/ProcModule.h
 
+    Modifications Copyright Daniel Arndt, 2010
+
+    This version has been modified to provide additional output and 
+    compatibility. For more information, please visit
+
+    http://web.cs.dal.ca/darndt
+
     Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
                         Berlin, Germany
 
@@ -42,12 +49,12 @@ inline void ENDEXPORT(void **exp, int *len);
 inline void ADD_CHAR(char val);
 inline void ADD_INT8(char val);
 inline void ADD_INT16(short val);
-inline void ADD_INT32(int val);
-inline void ADD_INT64(long long val);
+inline void ADD_INT32(int32_t val);
+inline void ADD_INT64(int64_t val);
 inline void ADD_UINT8(unsigned char val);
 inline void ADD_UINT16(unsigned short val);
-inline void ADD_UINT32(unsigned int val);
-inline void ADD_UINT64(unsigned long long val);
+inline void ADD_UINT32(uint32_t val);
+inline void ADD_UINT64(uint64_t val);
 inline void ADD_FLOAT(float val);
 inline void ADD_DOUBLE(double val);
 inline void ADD_IPV4ADDR(unsigned int val);

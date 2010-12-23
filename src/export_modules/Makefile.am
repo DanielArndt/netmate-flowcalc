@@ -7,7 +7,7 @@ INCLUDES = -I$(top_srcdir)/src/include \
            -I$(top_srcdir)/src/lib/libipfix \
            -I/usr/src/linux/include
 
-lib_LTLIBRARIES = testexp.la text_file.la bin_file.la ctext_file.la ac_file.la ac_udp.la
+lib_LTLIBRARIES = testexp.la text_file.la bin_file.la ctext_file.la ac_file.la netai_socket.la netai_arff.la 
 if ENABLE_IPFIX
   lib_LTLIBRARIES += ipfix.la
 endif
@@ -38,9 +38,15 @@ ac_file_la_LDFLAGS = -export-dynamic -module
 ac_file_la_SOURCES = ac_file.cc
 ac_file_la_LIBADD = ExportModule.lo
 
-ac_udp_la_LDFLAGS = -export-dynamic -module
-ac_udp_la_SOURCES = ac_udp.cc
-ac_udp_la_LIBADD = ExportModule.lo
+netai_socket_la_LDFLAGS = -export-dynamic -module
+netai_socket_la_SOURCES = netai_socket.cc
+netai_socket_la_LIBADD = ExportModule.lo
+
+netai_arff_la_LDFLAGS = -export-dynamic -module
+netai_arff_la_SOURCES = netai_arff.cc
+netai_arff_la_LIBADD = ExportModule.lo
+
+
 
 ipfix_la_LDFLAGS = -export-dynamic -module
 ipfix_la_SOURCES = ipfix.cc
