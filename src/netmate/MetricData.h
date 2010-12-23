@@ -1,6 +1,13 @@
 
 /*! \file   MetricData.h
 
+    Modifications Copyright Daniel Arndt, 2010
+
+    This version has been modified to provide additional output and 
+    compatibility. For more information, please visit
+
+    http://web.cs.dal.ca/darndt
+
     Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
                         Berlin, Germany
 
@@ -98,7 +105,7 @@ class MetricData
     inline char *align(char *var, DataType_e type)
     {
 	return (DataTypeSize[type] == 0) ? var :
-	    (char*) (((unsigned int)(var) + DataTypeSize[type]-1) /
+	    (char*) (((uintptr_t)(var) + DataTypeSize[type]-1) /
 		     DataTypeSize[type] * DataTypeSize[type]);
     }
 
