@@ -1,6 +1,13 @@
 
 /*! \file  ac_file.cc
 
+    Modifications Copyright Daniel Arndt, 2010
+
+    This version has been modified to provide additional output and 
+    compatibility. For more information, please visit
+
+    http://web.cs.dal.ca/darndt
+
     Copyright 2004 Sebastian Zander (szander@swin.edu.au) 
 
     This file is part of Network Measurement and Accounting System (NETMATE).
@@ -183,10 +190,10 @@ inline static void writeData( ofstream &ofile, DataType_e type, const char *dpos
         ofile << *((unsigned short*)dpos); 
         break;
     case INT32:
-        ofile << *((long*)dpos); 
+        ofile << *((int32_t*)dpos); 
         break;
     case UINT32:
-        ofile << *((unsigned long*)dpos); 
+        ofile << *((uint32_t*)dpos); 
         break;
     case IPV4ADDR:
       {

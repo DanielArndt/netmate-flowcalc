@@ -1,7 +1,14 @@
 
 /*! \file  netai_arff.cc
- 
-    Copyright 2005-2006 Swinburne University of Technology
+
+    Modifications Copyright Daniel Arndt, 2010
+
+    This version has been modified to provide additional output and 
+    compatibility. For more information, please visit
+
+    http://web.cs.dal.ca/darndt
+
+    Copyright 2005-2006 Swinburne University of Technology    
 
     This file is part of Network Traffic based Application Identification (netAI).
 
@@ -19,10 +26,11 @@
     along with this software; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
+ 
     Description:
     export into ARFF file suitable for importing into WEKA 
 
-    $Id: netai_arff.cc 98 2009-01-22 23:02:10Z szander $
+    $Id: netai_arff.cc 97 2006-05-16 23:54:35Z szander $
 
 */
 
@@ -182,10 +190,10 @@ inline static void writeData( ofstream &ofile, DataType_e type, const char *dpos
         ofile << *((unsigned short*)dpos); 
         break;
     case INT32:
-        ofile << *((long*)dpos); 
+        ofile << *((int32_t*)dpos); 
         break;
     case UINT32:
-        ofile << *((unsigned long*)dpos); 
+        ofile << *((uint32_t*)dpos); 
         break;
     case IPV4ADDR:
       {
@@ -200,10 +208,10 @@ inline static void writeData( ofstream &ofile, DataType_e type, const char *dpos
       }
       break;
     case INT64:
-        ofile << *((long long*)dpos);
+        ofile << *((int64_t*)dpos);
         break;
     case UINT64:
-        ofile << *((unsigned long long*)dpos); 
+        ofile << *((uint64_t*)dpos); 
         break;
     case FLOAT:
         ofile << *((float*)dpos); 

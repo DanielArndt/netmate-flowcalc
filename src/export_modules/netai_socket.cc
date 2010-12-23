@@ -1,6 +1,13 @@
 
 /*! \file  netai_socket.cc
 
+    Modifications Copyright Daniel Arndt, 2010
+
+    This version has been modified to provide additional output and 
+    compatibility. For more information, please visit
+
+    http://web.cs.dal.ca/darndt
+
     Copyright 2005-2006 Swinburne University of Technology    
 
     This file is part of Network Traffic based Application Identification (netAI).
@@ -308,10 +315,10 @@ inline static void writeData( ostringstream &str, DataType_e type, const char *d
         str << *((unsigned short*)dpos); 
         break;
     case INT32:
-        str << *((long*)dpos); 
+        str << *((int32_t*)dpos); 
         break;
     case UINT32:
-        str << *((unsigned long*)dpos); 
+        str << *((uint32_t*)dpos); 
         break;
     case IPV4ADDR:
       {
@@ -326,10 +333,10 @@ inline static void writeData( ostringstream &str, DataType_e type, const char *d
       }
       break;
     case INT64:
-        str << *((long long*)dpos);
+        str << *((int64_t*)dpos);
         break;
     case UINT64:
-        str << *((unsigned long long*)dpos); 
+        str << *((uint64_t*)dpos); 
         break;
     case FLOAT:
         str << *((float*)dpos); 
