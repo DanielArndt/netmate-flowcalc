@@ -1,0 +1,76 @@
+%define name netmate 
+%define version @VERSION@ 
+%define release 1
+%define prefix /usr/local
+
+%define builddir $RPM_BUILD_DIR/%{name}-%{version}
+
+Summary: netmate - network measurment and accounting tool 
+Name: %{name}
+Version: %{version}
+Release: %{release}
+License: GPL 
+Vendor: Fraunhofer FOKUS 
+Packager: Sebastian Zander <szander@swin.edu.au>
+Group: Utilities/Console
+Source: %{name}-%{version}.tar.gz
+URL: http://fokus.fraunhofer.de/research/cc/meteor/projects/ipqos/netmate
+BuildRoot: /tmp/%{name}-%{version}-root
+
+%description
+netmate is a flexible and extensible tool for accounting and
+network measurement. It can easily extended with new metric
+and export modules.
+
+Note: this version is compiled without SSL and thread support.
+
+%prep
+rm -rf %{builddir}
+
+%setup
+
+%build
+./configure --enable-threads --prefix=%{prefix}
+make 
+
+%install
+rm -rf $RPM_BUILD_ROOT
+make DESTDIR=$RPM_BUILD_ROOT install-strip
+rm -rf $RPM_BUILD_ROOT/%{prefix}/bin/genrules
+
+%clean
+rm -rf $RPM_BUILD_ROOT
+rm -rf %{builddir}
+
+%post
+/sbin/ldconfig
+
+%postun
+/sbin/ldconfig
+
+%files
+%defattr(-,root,root)
+%attr(0755,root,root) %{prefix}/bin/netmate
+%attr(0755,root,root) %{prefix}/bin/nmrsh
+%attr(0755,root,root) %{prefix}/bin/nmctl
+%{prefix}/lib/%{name}/*
+%{prefix}/etc/%{name}/example_rules1.xml
+%{prefix}/etc/%{name}/example_rules2.xml
+%{prefix}/etc/%{name}/example_rules3.xml
+%{prefix}/etc/%{name}/filterdef.dtd
+%{prefix}/etc/%{name}/filterdef.xml
+%{prefix}/etc/%{name}/filterval.dtd
+%{prefix}/etc/%{name}/filterval.xml
+%{prefix}/etc/%{name}/main.html
+%{prefix}/etc/%{name}/netmate.conf.dtd
+%{prefix}/etc/%{name}/netmate.conf.xml
+%{prefix}/etc/%{name}/reply.xml
+%{prefix}/etc/%{name}/reply.xsl
+%{prefix}/etc/%{name}/reply2.xsl
+%{prefix}/etc/%{name}/rulefile.dtd
+%doc AUTHORS COPYING INSTALL NEWS README ChangeLog 
+%doc doc/FAQ doc/known-bugs doc/wishlist doc/user_manual.pdf
+
+%changelog
+* Fri Feb  6 2001 Sebastian Zander  <szander@swin.edu.au>
+- initial

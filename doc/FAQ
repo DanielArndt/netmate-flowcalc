@@ -1,0 +1,29 @@
+Frequently asked questions (FAQ)
+
+Q: Where does "make install" put the files by default?
+
+A: By default netmate is installed in the /usr/local tree:
+   /usr/local/bin            holds the generated executables,
+   /usr/local/etc/netmate    holds the netmate configuration,
+   /usr/local/lib/netmate    holds all plug-in modules.
+
+
+Q: How can I install netmate to a different directory?
+
+A: Call ./configure with the option --prefix=<install_dir>
+
+
+Q: When I start netmate I get the error message
+   "Terminating netmate on error: cannot open pidfile '/var/run/netmate.pid' \
+    for writing: Permission denied". What is wrong?
+
+A: You will need to run netmate as user 'root'. This is usually required to 
+   capture packets from the network interface card and also for writing in 
+   /var/run/
+
+   You can also configure netmate so that pid file and log file will be
+   created in different directories (where you have write permissions). If
+   the interface is readable for you or you do not capture from an interface
+   (e.g. input from a tcpdump file) you do not need to have root permissions. 
+
+

@@ -1,0 +1,74 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<!DOCTYPE RULESET SYSTEM "rulefile.dtd"> 
+<RULESET ID="1">
+  <GLOBAL>
+    <!-- defaults for all rules can be overwritten by rule
+         specific configuration -->
+
+    <!-- how long the rules are active (in seconds) -->
+    <PREF NAME="Duration">1000</PREF>
+    <!-- export interval -->
+    <PREF NAME="Interval">10</PREF>
+
+    <ACTION NAME="show_ascii"></ACTION>
+
+    <EXPORT NAME="text_file">
+      <!-- by default each rule is exported into a separate file
+           named like the rule ID; the following line can be uncommented
+           to export all rules into a single file-->
+      <!--<PREF NAME="Filename">exportfile</PREF>-->
+
+      <!-- the following can be uncommented to create one file per action
+           per rule -->
+      <!--<PREF NAME="Multifile">yes</PREF>-->
+
+      <!-- specify user -->
+      <!--<PREF NAME="ExportUser">nobody</PREF>-->
+    </EXPORT>
+  </GLOBAL>
+  <RULE ID="1">
+    <!-- single masked value -->
+    <FILTER NAME="SrcIP" MASK="255.255.255.0">193.175.133.0</FILTER>
+    <!-- list of values -->
+    <!-- FILTER NAME="Proto">udp,tcp</FILTER -->
+
+    <ACTION NAME="bandwidth">
+      <PREF NAME="Interval">5</PREF>
+    </ACTION>
+
+    <ACTION NAME="pktlen">
+    </ACTION>
+
+  </RULE>
+  <RULE ID="2">
+    <FILTER NAME="SrcIP">*</FILTER>
+    <FILTER NAME="Proto">udp,tcp</FILTER>
+    <!-- range -->
+    <FILTER NAME="DstPort">1-1024</FILTER>    
+
+    <ACTION NAME="jitter">
+    </ACTION>
+
+    <ACTION NAME="port_use">
+    </ACTION>
+  </RULE>
+
+  <RULE ID="3">
+    <FILTER NAME="SrcIP">*</FILTER>
+    <FILTER NAME="DstIP">www.google.com</FILTER>
+    <FILTER NAME="DstPort">http</FILTER>
+
+    <ACTION NAME="bandwidth">
+    </ACTION>
+ 
+    <!-- match both directions of the flow -->
+    <PREF NAME="bidir">yes</PREF>
+
+    <!-- start 10 seconds later -->
+    <PREF NAME="Start">+10</PREF>
+
+    <!-- overwrite default settings -->
+    <PREF NAME="Duration">990</PREF>
+    <PREF NAME="Interval">5</PREF>
+  </RULE>
+</RULESET>

@@ -1,0 +1,7 @@
+based on webfs from Gerd Knorr
+
+changes:
+-removed dir listing
+-removed CGI support
+-added POST support
+-added hook registration for command handling

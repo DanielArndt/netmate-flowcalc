@@ -1,0 +1,96 @@
+Network Measurement and Accounting Meter (NetMate)
+
+REQUIREMENTS
+
+NetMate has been successfully compiled on ix86/Linux 2.4/2.6, ix86/FreeBSD 4
+and Sparc/Solaris 8.
+
+The following libraries are required:
+
+readline
+libpcap (http://www.tcpdump.org) 
+libxml2 and libxslt (http://xmlsoft.org)
+libcurl (http://curl.haxx.se)
+
+The following may be required depending on the build configuration:
+
+openssl (http://www.openssl.org)
+pthreads (OS dependent)
+
+libxslt and libcurl are only required for the interactive remote shell
+meter control tool (called nmrsh) and not for the meter itself.
+
+INSTALLATION
+
+A normal Unix installation is made in three steps (after you've
+unpacked the source archive):
+
+        ./configure
+        make
+        make install
+
+You probably need to be root when doing the last command.
+
+If you have checked out the sources from the CVS repository, read the
+CVS-INFO on how to proceed.
+
+Get a full listing of all available configure options by invoking it like:
+
+       ./configure --help
+
+If you want to install netmate in a different file hierarchy than /usr/local,
+you need to specify that already when running configure:
+
+        ./configure --prefix=/path/to/netmate/tree
+
+If you happen to have write permission in that directory, you can do 'make
+install' without being root. An example of this would be to make a local
+install in your own home directory:
+
+        ./configure --prefix=$HOME
+        make
+        make install
+
+By default netmate will be compiled without SSL and thread support. SSL
+can be enabled:
+
+        ./configure --enable-ssl
+
+If you have OpenSSL installed in the default search
+path for your compiler/linker, you don't need to do anything special. 
+If you have OpenSSL installed somewhere else (for example, /opt/OpenSSL,)
+you can run configure like this:
+
+        ./configure --with-ssl=/opt/OpenSSL
+
+Thread support requires a functional pthread library and can be enabled:
+
+        ./configure --enable-threads
+
+
+If you have OpenSSL installed, but with the libraries in one place and the
+header files somewhere else, you have to set the LDFLAGS and CPPFLAGS
+environment variables prior to running configure.  Something like this
+should work:
+
+     (with the Bourne shell and its clones):
+
+       CPPFLAGS="-I/path/to/ssl/include" LDFLAGS="-L/path/to/ssl/lib" \
+           ./configure
+
+     (with csh, tcsh and their clones):
+
+       env CPPFLAGS="-I/path/to/ssl/include" LDFLAGS="-L/path/to/ssl/lib" \
+       ./configure
+
+If your SSL library was compiled with rsaref (usually for use in the United
+States), you may also need to set:
+
+     LIBS=-lRSAglue -lrsaref
+
+If you want want to compile netmate for debugging use:
+
+     ./configure --enable-debug
+
+
+

@@ -1,0 +1,34 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<!DOCTYPE RULESET SYSTEM "rulefile.dtd"> 
+<RULESET ID="1">
+  <GLOBAL>
+    <PREF NAME="Duration">1000</PREF>
+    <PREF NAME="Interval">2</PREF>
+    <ACTION NAME="count"></ACTION>
+    <ACTION NAME="show_ascii"></ACTION>
+    <EXPORT NAME="text_file">
+      <PREF NAME="Filename">ruleset1-export</PREF>
+    </EXPORT>
+    <EXPORT NAME="testexp">
+    </EXPORT>
+  </GLOBAL>
+  <RULE ID="1">
+    <FILTER NAME="SrcIP">*</FILTER>
+
+    <ACTION NAME="testmod">
+      <PREF NAME="test">value</PREF>
+    </ACTION>
+
+  </RULE>
+  <RULE ID="2">
+    <!--<FILTER NAME="IPVer">0x40</FILTER>
+    <FILTER NAME="Proto">udp</FILTER>-->
+    <FILTER NAME="SrcIP">*</FILTER>
+
+    <ACTION NAME="pktid_crc32">
+    </ACTION>
+   
+    <ACTION NAME="pktid_md5">
+    </ACTION>
+  </RULE>
+</RULESET>

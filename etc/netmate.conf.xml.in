@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE CONFIG SYSTEM "config.dtd"> 
+<CONFIG>
+  <MAIN>
+    <!-- verbose level for logging -->
+    <PREF NAME="VerboseLevel" TYPE="UInt8">4</PREF>
+    <!-- log file name -->
+    <PREF NAME="LogFile">@DEF_STATEDIR@/log/netmate.log</PREF>
+    <!-- pid file location -->
+    <PREF NAME="PidFile">@DEF_STATEDIR@/run/netmate.pid</PREF>
+    <!-- filter attribute definition file -->
+    <PREF NAME="FilterDefFile">@DEF_SYSCONFDIR@/filterdef.xml</PREF>
+    <!-- filter constant file -->
+    <PREF NAME="FilterConstFile">@DEF_SYSCONFDIR@/filterval.xml</PREF> 
+    <!-- capture file to read packets from (instead of net interface) -->
+    <!-- <PREF NAME="CaptureFile">xxx</PREF>   -->
+    <!-- rule file to load at start -->
+    <!-- <PREF NAME="RuleFile">xxx</PREF>   -->
+    <!-- interface to capture packets from -->
+    <PREF NAME="NetInterface">eth0</PREF>
+    <!-- don't use promiscuous interface -->
+    <PREF NAME="NoPromiscInt" TYPE="Bool">no</PREF>
+  </MAIN>
+  <CONTROL>
+    <!-- enable remote control interface -->
+    <PREF NAME="Enable" TYPE="Bool">no</PREF>
+    <!-- port for control connections -->
+    <PREF NAME="ControlPort" TYPE="UInt16">12244</PREF>
+    <!-- use SSL encryption -->
+    <PREF NAME="UseSSL" TYPE="Bool">yes</PREF>
+    <!-- use IPv6 (if no IPv6 interface present IP4 will be used) -->
+    <PREF NAME="UseIPv6" TYPE="Bool">no</PREF>
+    <!-- log all incoming control requests -->
+    <PREF NAME="LogOnConnect" TYPE="Bool">yes</PREF>
+    <!-- log all meter commands -->
+    <PREF NAME="LogMeterCommand" TYPE="Bool">yes</PREF>
+    <!-- access list -->
+    <ACCESS>
+      <ALLOW TYPE="Host">localhost</ALLOW>
+      <DENY>All</DENY>
+    </ACCESS>
+  </CONTROL>
+  <CLASSIFIER>
+    <!-- run as separate thread -->
+    <PREF NAME="Thread" TYPE="Bool">no</PREF>
+    <!-- algorithm to use (currently Simple or RFC) -->
+    <PREF NAME="Algorithm">Simple</PREF>
+    <!-- snap size (in bytes from beginning of link layer) -->
+    <PREF NAME="SnapSize" TYPE="UInt16">64</PREF>
+    <!-- sampling algorithm before classification -->
+    <PREF NAME="Sampling">All</PREF>
+    <!-- pcap recv buffer size -->
+    <PREF NAME="RcvBufSize">1000000</PREF>
+    <!-- type of net tap (pcap or erf) -->
+    <PREF NAME="TapType">pcap</PREF>
+  </CLASSIFIER>
+  <PKTPROCESSOR>
+    <!-- run as separate thread -->
+    <PREF NAME="Thread" TYPE="Bool">no</PREF>
+    <!-- directory where the processing modules are located -->
+    <PREF NAME="ModuleDir">@DEF_LIBDIR@</PREF>
+    <!-- allow on-demand loading i.e. when new module is used in rule definition --> 
+    <PREF NAME="ModuleDynamicLoad" TYPE="Bool">yes</PREF>
+    <!-- buffers in queue between classifier and packet processor -->
+    <PREF NAME="PacketQueueBuffers" TYPE="UInt32">20000</PREF>
+    <!-- modules which are preloaded at startup -->
+    <PREF NAME="Modules">count bandwidth jitter pktlen show_ascii</PREF>
+    <MODULES>
+      <MODULE NAME="count">
+	<PREF NAME="CounterType">absolute</PREF>
+      </MODULE>
+      <MODULE NAME="jitter">
+      </MODULE>
+      <MODULE NAME="pktlen">
+      </MODULE>
+    </MODULES>
+  </PKTPROCESSOR>
+  <EXPORTER>
+    <!-- run as separate thread -->
+    <PREF NAME="Thread" TYPE="Bool">no</PREF>
+    <!-- directory where the export modules are located -->
+    <PREF NAME="ModuleDir">@DEF_LIBDIR@</PREF>
+    <!-- allow on-demand loading i.e. when new module is used in rule definition -->
+    <PREF NAME="ModuleDynamicLoad" TYPE="Bool">yes</PREF>
+    <!-- modules which are preloaded at startup -->
+    <PREF NAME="Modules">testexp text_file</PREF>
+    <MODULES>
+      <MODULE NAME="text_file">
+	<PREF NAME="ExportDir">/tmp</PREF>
+        <!--<PREF NAME="ExportUserID">nobody</PREF>-->
+      </MODULE>
+      <MODULE NAME="bin_file">
+        <PREF NAME="ExportDir">/tmp</PREF>
+      </MODULE>
+      <MODULE NAME="ipfix">
+        <PREF NAME="SourceID">12345</PREF>
+        <PREF NAME="Collector">localhost</PREF>
+        <PREF NAME="Port" TYPE="UInt16">6766</PREF>
+        <PREF NAME="Protocol">UDP</PREF>
+        <PREF NAME="MappingFile">@DEF_SYSCONFDIR@/ipfix_mapping.txt</PREF>
+      </MODULE>
+      <!--<MODULE NAME="mysql">
+	<PREF NAME="DBHost">192.168.44.68</PREF>
+	<PREF NAME="DBName">netmate</PREF>
+	<PREF NAME="DBUser">nobody</PREF>
+      </MODULE>-->
+    </MODULES>
+  </EXPORTER>
+</CONFIG>

@@ -1,0 +1,21 @@
+Known bugs & problems
+---------------------
+
+duplicate httpd access log entries when remote config is used 
+(sometimes)
+
+memory leak in nmrsh/readline (constant 40 byte), readline bug?
+memory leak in crypto lib!? (happens only when remote config
+via SSL is used)
+
+C++ memory optimization leads to still reachable blocks after
+program exit; C++ memory optimization can be disabled with
+seeting GLIBCPP_FORCE_NEW environment variable (not a bug)
+
+netmate sometimes does not properly terminate when running 
+multithreaded
+
+when using netmate on trace files the export timestamp in the
+exported data files is the current time but not based on the
+trace
+

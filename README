@@ -1,0 +1,36 @@
+Network Measurement and Accounting Meter (NETMATE)
+
+README
+
+NETMATE is a network measurement tool. It can be used for
+accounting, delay/loss measurement, capturing and much
+more.
+
+For basic installation instructions read the file INSTALL.
+
+When there are questions or problems please read the FAQ
+(doc/FAQ) first and have a look at the netmate documentation
+in the doc directory before contacting the authors. 
+
+WEB SITE
+
+Here you can download the complete user and developer
+documentation and the latest version of netmate in
+binary and source format.
+
+http://netmate-meter.sourceforge.net/
+
+DOWNLOAD
+
+The software is available as source distribution or binary RPM
+(Linux x86 only) from:
+
+http://sourceforge.net/projects/netmate-meter/
+
+CONTACT
+
+If you have problems, questions, ideas or suggestions, please contact us:
+
+Sebastian Zander (szander@swin.edu.au)
+Carsten Schmoll (schmoll@fokus.fraunhofer.de)
+

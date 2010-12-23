@@ -1,0 +1,28 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<!-- The Document Type Definition (DTD) for the file -->
+
+<!ELEMENT RULESET (GLOBAL, RULE*)>
+<!ELEMENT GLOBAL (PREF|ACTION|EXPORT)*>
+<!-- global configuration is overruled by per rule configuration -->
+<!ELEMENT RULE (PREF|FILTER|ACTION|EXPORT)*>
+<!ATTLIST RULESET
+          ID CDATA #REQUIRED>
+<!ATTLIST RULE
+        ID CDATA #REQUIRED>
+<!ELEMENT PREF (#PCDATA)>
+<!ATTLIST PREF
+        NAME CDATA #REQUIRED
+        TYPE (UInt8|SInt8|UInt16|SInt16|UInt32|SInt32|UInt64|SInt64|Bool|Binary|String|IPAddr|IP6Addr) "String">
+<!ELEMENT FILTER (#PCDATA)>
+<!ATTLIST FILTER
+        NAME CDATA #REQUIRED
+        MASK CDATA "0xFF"
+>
+<!ELEMENT ACTION (PREF*)>
+<!ATTLIST ACTION
+        NAME CDATA #REQUIRED>
+<!ELEMENT EXPORT (PREF*)>
+<!ATTLIST EXPORT
+        NAME CDATA #REQUIRED
+>
+

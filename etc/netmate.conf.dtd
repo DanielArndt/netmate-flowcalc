@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- The Document Type Definition (DTD) for the file -->
+
+        <!ELEMENT CONFIG (MAIN ,  CONTROL , CLASSIFIER , PKTPROCESSOR , EXPORTER)>
+        <!ELEMENT MAIN (PREF*)>
+        <!ELEMENT CONTROL (PREF* , ACCESS)>
+        <!ELEMENT ACCESS (ALLOW | DENY)*>
+        <!ELEMENT ALLOW (#PCDATA)>
+        <!ELEMENT DENY (#PCDATA)>
+        <!ELEMENT CLASSIFIER (PREF*)>
+        <!ELEMENT PKTPROCESSOR (PREF* , MODULES)>
+        <!ELEMENT EXPORTER (PREF* , MODULES)>
+        <!ELEMENT MODULES (MODULE*)>
+        <!ELEMENT MODULE (PREF*)>
+        <!ELEMENT PREF (#PCDATA)>
+
+        <!ATTLIST MODULE
+                NAME CDATA #REQUIRED
+        >
+        <!ATTLIST ALLOW
+                TYPE (Host | User | Group) "Host"
+        >
+        <!ATTLIST DENY
+                TYPE (Host | User | Group) "Host"
+        >
+        <!ATTLIST PREF
+                NAME CDATA #REQUIRED
+                TYPE (UInt8 | SInt8 | UInt16 | SInt16 | UInt32 | SInt32 | UInt64 | SInt64 | Float32 |
+            Float64 | Bool | String | IPAddr) "String"
+   >

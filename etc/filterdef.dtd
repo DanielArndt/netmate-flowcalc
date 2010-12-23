@@ -1,0 +1,19 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<!-- The Document Type Definition (DTD) for the file -->
+
+<!ELEMENT FILTERDEF (DEF | COND)*>
+<!ELEMENT DEF (#PCDATA)>
+<!ATTLIST DEF
+REFER (MAC | IP | TRANS | DATA) #REQUIRED
+OFFSET CDATA #REQUIRED
+MASK CDATA "0xFF"
+LENGTH CDATA "1" 
+TYPE (UInt8|SInt8|UInt16|SInt16|UInt32|SInt32|UInt64|SInt64|Bool|Binary|String|IPAddr|IP6Addr) #REQUIRED 
+REV CDATA ""
+>
+<!ELEMENT COND (DEF*)>
+<!ATTLIST COND
+        NAME CDATA #REQUIRED
+        MASK CDATA "0xFF"
+        VAL CDATA #REQUIRED
+>

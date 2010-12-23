@@ -1,0 +1,190 @@
+#!/bin/sh
+
+#
+#   Copyright 2003-2004 Fraunhofer Institute for Open Communication Systems (FOKUS),
+#                       Berlin, Germany
+
+#   This file is part of Network Measurement and Accounting System (NETMATE).
+
+#   NETMATE is free software; you can redistribute it and/or modify 
+#   it under the terms of the GNU General Public License as published by 
+#   the Free Software Foundation; either version 2 of the License, or
+#   (at your option) any later version.
+
+#   NETMATE is distributed in the hope that it will be useful, 
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of 
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+
+#   You should have received a copy of the GNU General Public License
+#   along with this software; if not, write to the Free Software 
+#   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# $Id: nmctl.in,v 1.2 2005/02/16 06:22:06 s_zander Exp $
+#
+
+OS=`uname`
+PIDFILE=@DEF_STATEDIR@/run/netmate.pid
+OUTFILE=/tmp/netmate.out
+METER=@DEF_BINDIR@/netmate
+MCONTROL=@DEF_BINDIR@/nmrsh
+USER=testy
+USERPW="\n"
+NMCTL=`basename $0`
+IFCONFIG=/sbin/ifconfig
+USAGE="Usage: $NMCTL {start|stop|status|restart} [<netmate_options>]"
+
+# parse command line options
+COMMAND=$1
+shift 1
+if [ $1 ] && [ $1 = "-i" ] ; then
+    INTERFACE=$2
+fi 
+ARGV="$@"
+
+# check if interface exists
+if [ $INTERFACE ] ; then
+    if ! $IFCONFIG $INTERFACE > /dev/null ; then
+	echo "$NMCTL error accessing interface $INTERFACE"
+	exit 1
+    fi
+fi
+
+# check for netfilter classifier support
+NF=`nm $METER | grep ipulog_create_handle`
+
+if [ "$NF" ]; then
+    
+    if [ -f /usr/local/sbin/iptables ] ; then
+	IPTABLES=/usr/local/sbin/iptables
+    elif [ -f /usr/sbin/iptables ] ; then
+	IPTABLES=/usr/sbin/iptables
+    elif [ -f ../netfilter_userspace/iptables ] ; then
+	IPTABLES=../netfilter_userspace/iptables
+    else
+	echo "$NMCTL: warning: no iptables executable found"
+    fi
+    
+    # try insert meter table module
+    insmod iptable_meter >& /dev/null
+
+    # check for the meter table
+    if $IPTABLES -t meter -vL >& /dev/null ; then
+	NFTABLE=meter
+	NFHOOK=PROMISCUOUS
+    else
+	echo "$NMCTL: warning: can not use table meter promiscuous hook"
+	if $IPTABLES -t filter -vL >& /dev/null ; then
+	    NFTABLE=filter
+	    NFHOOK=FORWARD
+	else
+	    echo "$NMCTL: warning: can not use table filter forward hook"
+	    exit 1
+	fi
+    fi
+fi
+
+# check for pid file
+if [ -f $PIDFILE ] ; then
+    PID=`cat $PIDFILE`
+    if [ "$PID" != "" ] && ps $PID > /dev/null 2>&1 ; then
+	STATUS="netmate (pid $PID) running"
+	RUNNING=1
+    else
+	STATUS="netmate (pid $PID?) not running"
+	RUNNING=0
+    fi
+else
+    STATUS="netmate (no pid file) not running"
+    RUNNING=0
+fi
+
+case "$COMMAND" in
+    start)
+	if [ $RUNNING = 1 ] ; then
+	    echo "$NMCTL: netmate (pid $PID) already running"
+	else   
+	    if ! [ -e $METER ]; then
+		echo "$NMCTL: error: missing meter executable"
+		exit 1
+	    fi
+ 
+	    # increase socket read buffer size to 2MB
+	    if [ $OS = "Linux" ] ; then
+		echo 2000000 > /proc/sys/net/core/rmem_max 
+	    fi
+	    
+	    if [ "$NF" ] ; then   
+
+                # delete netfilter tables
+		if  $IPTABLES -t $NFTABLE -vL | grep -qs meter_base ; then
+		    $IPTABLES -t $NFTABLE -F $NFHOOK
+		    $IPTABLES -t $NFTABLE -F meter_base
+		else
+		    # setup netfilter tables
+		    $IPTABLES -t $NFTABLE -N meter_base
+		    $IPTABLES -t $NFTABLE -F $NFHOOK
+		    $IPTABLES -t $NFTABLE -A $NFHOOK -j meter_base 
+		fi
+
+		$IFCONFIG promisc $INTERFACE >& /dev/null
+	    fi
+
+	    echo  "$NMCTL: $METER $ARGV"
+	    nohup $METER $ARGV > $OUTFILE 2>&1 & 
+	    sleep 1
+	    cat $OUTFILE
+	fi
+	;;
+    stop)
+	if [ $RUNNING = 0 ] ; then
+	    echo "$NMCTL: $STATUS"
+	else
+	    if kill -INT $PID ; then
+		echo "$NMCTL: netmate stopped"
+	    else
+		echo "$NMCTL: netmate could not be stopped, doing kill -9"
+		kill -9 $PID
+		rm -f $PIDFILE
+	    fi
+
+	    if [ $OS = "Linux" ] ; then
+		echo 65536 > /proc/sys/net/core/rmem_max 
+	    fi
+
+	    if [ "$NF" ] ; then
+ 	        # delete netfilter tables
+		if  $IPTABLES -t $NFTABLE -vL | grep -qs meter_base ; then
+		    $IPTABLES -t $NFTABLE -F $NFHOOK
+		    $IPTABLES -t $NFTABLE -X meter_base
+		fi
+
+		$IFCONFIG -promisc $INTERFACE >& /dev/null
+	    fi
+	fi
+	;;
+    restart)
+	if [ $RUNNING = 0 ] ; then
+	    echo "$NMCTL: netmate not running, trying to start"
+	    $0 start $ARGV
+	else
+	    $0 stop && sleep 1 && $0 start $ARGV
+	fi
+	;;
+    status|check)
+	if [ $RUNNING = 1 ] ; then
+	    UPTIME=`$MCONTROL -u $USER -P $USERPW -c "get_info uptime" 2>&1 | grep "uptime" | sed -e "s/.*uptime[ \t]*\(.*\)/\1/g"`
+	    if [ -n "$UPTIME" ] ; then
+		echo "$NMCTL: netmate is running for $UPTIME"
+	    else
+		echo "$NMCTL: netmate is running but does not respond on meter command"
+	    fi
+	else
+	    echo "$NMCTL: netmate is NOT running"
+	fi
+	;;
+    *)
+	echo "$USAGE"
+	exit 1
+	;;
+esac

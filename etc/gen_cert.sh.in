@@ -1,0 +1,24 @@
+#!/bin/sh
+
+path=$1
+
+if [ "x$path" = "x" ] ; then
+  pem=netmate.pem
+else
+  pem=$path/netmate.pem
+fi ;
+
+
+fqdn=`hostname` 
+if [ "x$fqdn" = "x" ] ; then 
+  fqdn="localhost.localdomain"  
+fi ; 
+cat << EOF | openssl req -passout pass:@SSL_PASSWD@ -keyout $pem -out $pem -new -x509 2> /dev/null
+--
+SomeState
+SomeCity
+SomeOrganization
+SomeOrganizationalUnit
+$fqdn
+root@$fqdn
+EOF
