@@ -80,6 +80,7 @@ typeInfo_t exportInfo[] = {
   { UINT32, "burg_cnt" },
   { UINT32, "total_fhlen"    },
   { UINT32, "total_bhlen"    },
+  { UINT16, "dscp" },
   //{ UINT64, "time_s" },
   EXPORT_END 
 };
@@ -182,6 +183,9 @@ struct flowData_t {
   /* DA: header lengths */
   uint32_t total_fhlen;
   uint32_t total_bhlen;
+  
+  /* DA: DSCP */
+  uint16_t dscp;
 
   uint64_t idle_threshold;
   uint64_t min_duration;
@@ -277,6 +281,20 @@ int processPacket( char *packet, metaData_t *meta, void *flowdata )
     data->total_fhlen += iphlen;
   } else {
     data->total_bhlen += iphlen;
+  }
+  /* DA: Get DS field
+  bitwise AND with the DSCP field
+  bit shift twice to the right to get DSCP value */
+  unsigned short dscp = (meta->payload[meta->offs[L_NET] + 1] & 0xFC) >> 2;
+  if (dscp) { 
+    if (!(data->dscp)){
+      data->dscp = dscp;
+    }
+    else{
+      if (data->dscp != dscp){
+        printf("Error: two different tags. Current: %d New: %d\n", dscp, data->dscp);
+      }
+    }
   }
 
   /* transport proto specific stuff */
@@ -685,6 +703,7 @@ int exportData( void **exp, int *len, void *flowdata )
 
   ADD_UINT32( data->total_fhlen );
   ADD_UINT32( data->total_bhlen );
+  ADD_UINT16( data->dscp );
   
   //ADD_UINT64( data->first );
   
@@ -706,10 +725,10 @@ char* getModuleInfo(int i)
 {
   
   switch(i) {
-  case I_MODNAME:   return "flowstats";
-  case I_VERSION:   return "1.0DArev2";
+  case I_MODNAME:   return "flowstats_dscp";
+  case I_VERSION:   return "1.0DA1.0";
   case I_CREATED:   return "2004/06/08";
-  case I_MODIFIED:  return "2010/10/08";
+  case I_MODIFIED:  return "2010/10/12";
   case I_BRIEF:     return "compute various flow statistics";
   case I_VERBOSE:   return "this module computes various statistics based on packet lengths\n"
 	  "and inter-arrival times that are used for flow characterisation";
