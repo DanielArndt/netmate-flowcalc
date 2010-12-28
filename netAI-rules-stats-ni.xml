@@ -1,0 +1,36 @@
+<?xml version ="1.0" encoding="UTF-8"?>
+<!DOCTYPE RULESET SYSTEM "rulefile.dtd"> 
+<RULESET ID="1">
+  <!-- global part is the default for all rules -->
+  <!-- overwritten by rule specific configuration -->
+  <GLOBAL>
+ 
+    <ACTION NAME="netai_flowstats">
+      <PREF NAME="Idle_Threshold">1000000</PREF>
+    </ACTION>
+
+    <EXPORT NAME="ac_file">
+      <PREF NAME="Filename">/home/darndt/netmate.out</PREF>
+      <PREF NAME="FlowID">no</PREF>
+      <PREF NAME="ExportStatus">no</PREF>
+    </EXPORT>
+
+    <!-- export interval in seconds -->
+    <!-- PREF NAME="Interval">10</PREF>  -->
+   
+  </GLOBAL>
+
+  <RULE ID="1">
+    <!-- match all udp/tcp packets -->
+    <FILTER NAME="SrcIP">*</FILTER>
+    <FILTER NAME="SrcPort">*</FILTER>
+    <FILTER NAME="DstIP">*</FILTER>
+    <FILTER NAME="DstPort">*</FILTER>
+    <FILTER NAME="Proto">tcp,udp</FILTER>
+
+    <PREF NAME="auto">yes</PREF>
+    <PREF NAME="bidir">yes</PREF>
+    <PREF NAME="FlowTimeout">600</PREF>
+  </RULE>
+
+</RULESET>
