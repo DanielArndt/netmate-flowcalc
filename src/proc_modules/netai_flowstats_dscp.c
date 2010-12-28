@@ -330,7 +330,7 @@ int processPacket( char *packet, metaData_t *meta, void *flowdata )
   /* FIXME: test for 1 packet in both dir for ICMP/UDP too */
   
   /* heuristic for detecting a valid TCP connection, connection must have been
-	 established with a SYN, SYN/ACK, ACK and at leat 1 packet must contain data
+	 established with a SYN, SYN/ACK, ACK and at least 1 packet must contain data
 	 OR at least one packet with ACK flag set contains data AND there must be
 	 at least 1 packet in each direction */
   if (proto==6) {
