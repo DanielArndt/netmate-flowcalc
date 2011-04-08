@@ -275,7 +275,8 @@ void NetTapPcap::procPacket(char *buf, unsigned long len, const struct pcap_pkth
         proto = pkt->payload[pkt->offs[L_NET] + 9];
         pkt->layers[L_NET] = N_IP;
         break;
-    case 0x86DD:
+    // FIXME there seems to be a problem with certain IPv6 packets. Test with mawi201101021400.dump
+    /*case 0x86DD:
         // IPv6
         offs += IP6_HLEN;
         proto = pkt->payload[pkt->offs[L_NET] + 6];
@@ -288,10 +289,10 @@ void NetTapPcap::procPacket(char *buf, unsigned long len, const struct pcap_pkth
             } else {
                 offs += pkt->payload[pkt->offs[L_NET] + offs + 1] * 4 + 8;
             }
-            proto = pkt->payload[pkt->offs[1] + offs];
+            proto = pkt->payload[pkt->offs[L_NET] + offs];
         }
         pkt->layers[L_NET] = N_IP6;
-        break;
+        break;*/
     default:
         offs = 0;
         pkt->layers[L_NET] = N_UNKNOWN;

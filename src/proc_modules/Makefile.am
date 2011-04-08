@@ -5,7 +5,7 @@ INCLUDES = -I$(top_srcdir)/src/include \
            -I$(top_srcdir)/src/proc_modules \
            -I/usr/src/linux/include
 
-lib_LTLIBRARIES = count.la bandwidth.la jitter.la pktid_crc32.la pktid_md5.la pktlen.la port_use.la rtploss.la rtt_ping.la show_ascii.la testmod.la netai_flowstats.la netai_flowstats_dscp.la capture.la  
+lib_LTLIBRARIES = count.la bandwidth.la jitter.la pktid_crc32.la pktid_md5.la pktlen.la port_use.la rtploss.la rtt_ping.la show_ascii.la testmod.la netai_flowstats.la netai_flowstats_dscp.la netai_flowstats_dscp_1s.la capture.la  
 
 if ENABLE_DEBUG
   AM_CFLAGS = -g -fPIC -DDEBUG -DPROFILING 
@@ -65,6 +65,9 @@ netai_flowstats_dscp_la_LDFLAGS = -export-dynamic -module
 netai_flowstats_dscp_la_SOURCES = netai_flowstats_dscp.c
 netai_flowstats_dscp_la_LIBADD = ProcModule.lo
 
+netai_flowstats_dscp_1s_la_LDFLAGS = -export-dynamic -module
+netai_flowstats_dscp_1s_la_SOURCES = netai_flowstats_dscp_1s.c
+netai_flowstats_dscp_1s_la_LIBADD = ProcModule.lo
 
 capture_la_LDFLAGS = -export-dynamic -module
 capture_la_SOURCES = capture.c

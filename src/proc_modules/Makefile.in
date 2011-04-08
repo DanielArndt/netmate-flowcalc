@@ -74,6 +74,10 @@ netai_flowstats_dscp_la_DEPENDENCIES = ProcModule.lo
 am_netai_flowstats_dscp_la_OBJECTS = netai_flowstats_dscp.lo
 netai_flowstats_dscp_la_OBJECTS =  \
 	$(am_netai_flowstats_dscp_la_OBJECTS)
+netai_flowstats_dscp_1s_la_DEPENDENCIES = ProcModule.lo
+am_netai_flowstats_dscp_1s_la_OBJECTS = netai_flowstats_dscp_1s.lo
+netai_flowstats_dscp_1s_la_OBJECTS =  \
+	$(am_netai_flowstats_dscp_1s_la_OBJECTS)
 pktid_crc32_la_DEPENDENCIES = ProcModule.lo
 am_pktid_crc32_la_OBJECTS = pktid_crc32.lo
 pktid_crc32_la_OBJECTS = $(am_pktid_crc32_la_OBJECTS)
@@ -112,19 +116,21 @@ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 SOURCES = $(bandwidth_la_SOURCES) $(capture_la_SOURCES) \
 	$(count_la_SOURCES) $(jitter_la_SOURCES) \
 	$(netai_flowstats_la_SOURCES) \
-	$(netai_flowstats_dscp_la_SOURCES) $(pktid_crc32_la_SOURCES) \
-	$(pktid_md5_la_SOURCES) $(pktlen_la_SOURCES) \
-	$(port_use_la_SOURCES) $(rtploss_la_SOURCES) \
-	$(rtt_ping_la_SOURCES) $(show_ascii_la_SOURCES) \
-	$(testmod_la_SOURCES)
+	$(netai_flowstats_dscp_la_SOURCES) \
+	$(netai_flowstats_dscp_1s_la_SOURCES) \
+	$(pktid_crc32_la_SOURCES) $(pktid_md5_la_SOURCES) \
+	$(pktlen_la_SOURCES) $(port_use_la_SOURCES) \
+	$(rtploss_la_SOURCES) $(rtt_ping_la_SOURCES) \
+	$(show_ascii_la_SOURCES) $(testmod_la_SOURCES)
 DIST_SOURCES = $(bandwidth_la_SOURCES) $(capture_la_SOURCES) \
 	$(count_la_SOURCES) $(jitter_la_SOURCES) \
 	$(netai_flowstats_la_SOURCES) \
-	$(netai_flowstats_dscp_la_SOURCES) $(pktid_crc32_la_SOURCES) \
-	$(pktid_md5_la_SOURCES) $(pktlen_la_SOURCES) \
-	$(port_use_la_SOURCES) $(rtploss_la_SOURCES) \
-	$(rtt_ping_la_SOURCES) $(show_ascii_la_SOURCES) \
-	$(testmod_la_SOURCES)
+	$(netai_flowstats_dscp_la_SOURCES) \
+	$(netai_flowstats_dscp_1s_la_SOURCES) \
+	$(pktid_crc32_la_SOURCES) $(pktid_md5_la_SOURCES) \
+	$(pktlen_la_SOURCES) $(port_use_la_SOURCES) \
+	$(rtploss_la_SOURCES) $(rtt_ping_la_SOURCES) \
+	$(show_ascii_la_SOURCES) $(testmod_la_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -296,7 +302,7 @@ INCLUDES = -I$(top_srcdir)/src/include \
            -I$(top_srcdir)/src/proc_modules \
            -I/usr/src/linux/include
 
-lib_LTLIBRARIES = count.la bandwidth.la jitter.la pktid_crc32.la pktid_md5.la pktlen.la port_use.la rtploss.la rtt_ping.la show_ascii.la testmod.la netai_flowstats.la netai_flowstats_dscp.la capture.la  
+lib_LTLIBRARIES = count.la bandwidth.la jitter.la pktid_crc32.la pktid_md5.la pktlen.la port_use.la rtploss.la rtt_ping.la show_ascii.la testmod.la netai_flowstats.la netai_flowstats_dscp.la netai_flowstats_dscp_1s.la capture.la  
 @ENABLE_DEBUG_FALSE@AM_CFLAGS = -O2 -fPIC
 @ENABLE_DEBUG_TRUE@AM_CFLAGS = -g -fPIC -DDEBUG -DPROFILING 
 count_la_LDFLAGS = -export-dynamic -module
@@ -338,6 +344,9 @@ netai_flowstats_la_LIBADD = ProcModule.lo
 netai_flowstats_dscp_la_LDFLAGS = -export-dynamic -module
 netai_flowstats_dscp_la_SOURCES = netai_flowstats_dscp.c
 netai_flowstats_dscp_la_LIBADD = ProcModule.lo
+netai_flowstats_dscp_1s_la_LDFLAGS = -export-dynamic -module
+netai_flowstats_dscp_1s_la_SOURCES = netai_flowstats_dscp_1s.c
+netai_flowstats_dscp_1s_la_LIBADD = ProcModule.lo
 capture_la_LDFLAGS = -export-dynamic -module
 capture_la_SOURCES = capture.c
 capture_la_LIBADD = ProcModule.lo
@@ -413,6 +422,8 @@ netai_flowstats.la: $(netai_flowstats_la_OBJECTS) $(netai_flowstats_la_DEPENDENC
 	$(LINK) -rpath $(libdir) $(netai_flowstats_la_LDFLAGS) $(netai_flowstats_la_OBJECTS) $(netai_flowstats_la_LIBADD) $(LIBS)
 netai_flowstats_dscp.la: $(netai_flowstats_dscp_la_OBJECTS) $(netai_flowstats_dscp_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(netai_flowstats_dscp_la_LDFLAGS) $(netai_flowstats_dscp_la_OBJECTS) $(netai_flowstats_dscp_la_LIBADD) $(LIBS)
+netai_flowstats_dscp_1s.la: $(netai_flowstats_dscp_1s_la_OBJECTS) $(netai_flowstats_dscp_1s_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(netai_flowstats_dscp_1s_la_LDFLAGS) $(netai_flowstats_dscp_1s_la_OBJECTS) $(netai_flowstats_dscp_1s_la_LIBADD) $(LIBS)
 pktid_crc32.la: $(pktid_crc32_la_OBJECTS) $(pktid_crc32_la_DEPENDENCIES) 
 	$(LINK) -rpath $(libdir) $(pktid_crc32_la_LDFLAGS) $(pktid_crc32_la_OBJECTS) $(pktid_crc32_la_LIBADD) $(LIBS)
 pktid_md5.la: $(pktid_md5_la_OBJECTS) $(pktid_md5_la_DEPENDENCIES) 
@@ -443,6 +454,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/md5c.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/netai_flowstats.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/netai_flowstats_dscp.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/netai_flowstats_dscp_1s.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pktid_crc32.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pktid_md5.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pktlen.Plo@am__quote@
