@@ -72,46 +72,46 @@ int   _listpos;
 
 /*! export functions */
 
-inline void STARTEXPORT(void *data)
+extern inline void STARTEXPORT(void *data)
 {
     _dest = data; 
     _pos=0;   
 }
 
-inline void ENDEXPORT(void **exp, int *len)
+extern inline void ENDEXPORT(void **exp, int *len)
 {
     *exp = _dest; 
     *len = _pos;
 }
 
-inline void ADD_CHAR(char val)
+extern inline void ADD_CHAR(char val)
 {
     ALIGN(_pos, char);
     *((char*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_INT8(char val)
+extern inline void ADD_INT8(char val)
 {
     ALIGN(_pos, char);
     *((char*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
-inline void ADD_INT16(short val)
+extern inline void ADD_INT16(short val)
 {
     ALIGN(_pos, short);
     *((short*)(_dest+_pos))= val;
     _pos += sizeof(val);
 }
 
-inline void ADD_INT32(int32_t val)
+extern inline void ADD_INT32(int32_t val)
 {
     ALIGN(_pos, int32_t);
     *((int32_t*)(_dest+_pos))= val;
     _pos += sizeof(val);
 }
 
-inline void ADD_INT64(int64_t val)
+extern inline void ADD_INT64(int64_t val)
 {
     ALIGN( _pos, int64_t );
     /* even 64bit values only aligned to 32 bit! */
@@ -119,28 +119,28 @@ inline void ADD_INT64(int64_t val)
     _pos += sizeof(val); 
 }
 
-inline void ADD_UINT8(unsigned char val)
+extern inline void ADD_UINT8(unsigned char val)
 {
     ALIGN(_pos, unsigned char);
     *((unsigned char*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_UINT16(unsigned short val)
+extern inline void ADD_UINT16(unsigned short val)
 {
     ALIGN(_pos, unsigned short);
     *((unsigned short*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_UINT32(uint32_t val)
+extern inline void ADD_UINT32(uint32_t val)
 {
     ALIGN(_pos, uint32_t);
     *((uint32_t*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_UINT64(uint64_t val)
+extern inline void ADD_UINT64(uint64_t val)
 {
     ALIGN( _pos, uint64_t ); 
     /* even 64bit values only aligned to 32 bit! */
@@ -148,27 +148,27 @@ inline void ADD_UINT64(uint64_t val)
     _pos += sizeof(val); 
 }
 
-inline void ADD_FLOAT(float val)
+extern inline void ADD_FLOAT(float val)
 {
     ALIGN(_pos, float);
     *((float*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_DOUBLE(double val)
+extern inline void ADD_DOUBLE(double val)
 {
     ALIGN(_pos, double);
     *((double*)(_dest+_pos)) = val;
     _pos += sizeof(val);
 }
 
-inline void ADD_IPV4ADDR(unsigned int val)
+extern inline void ADD_IPV4ADDR(unsigned int val)
 {
     /* treat as unsigned32 */
     ADD_UINT32(val);
 }
 
-inline void ADD_LIST(unsigned int num)
+extern inline void ADD_LIST(unsigned int num)
 {
     ADD_UINT32(num);
     _listpos = _pos; 
@@ -176,19 +176,19 @@ inline void ADD_LIST(unsigned int num)
     _listlen = _pos;
 }
 
-inline void END_LIST()
+extern inline void END_LIST()
 {
     ((int*)((char*)_dest+_listpos))[0] = _pos - _listlen;
 }
 
-inline void ADD_STRING(char *txt)
+extern inline void ADD_STRING(char *txt)
 {
     int _slen = strlen(txt) + 1;
     memcpy(_dest+_pos, txt, _slen);
     _pos += _slen; 
 }
 
-inline void ADD_BINARY(unsigned int size, char *src)
+extern inline void ADD_BINARY(unsigned int size, char *src)
 {
     ADD_UINT32( size );
     memcpy(_dest+_pos, src, size);
